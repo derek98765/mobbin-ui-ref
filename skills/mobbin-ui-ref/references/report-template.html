@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mobbin UI References — [Screen/Flow Name]</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,400;1,8..60,500&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink-900: oklch(18% 0.012 255);
+      --ink-700: oklch(35% 0.012 255);
+      --ink-500: oklch(52% 0.010 255);
+      --ink-300: oklch(70% 0.008 255);
+      --ink-100: oklch(88% 0.006 255);
+      --ink-50:  oklch(96% 0.004 255);
+      --ink-25:  oklch(98.5% 0.003 255);
+
+      --paper: oklch(99.5% 0.002 255);
+      --rule:  oklch(91% 0.005 255);
+
+      --green-fg:    oklch(40% 0.14 150);
+      --green-bg:    oklch(97% 0.018 150);
+      --amber-fg:    oklch(48% 0.16 88);
+      --red-fg:      oklch(44% 0.18 25);
+
+      --accent-bg: oklch(96% 0.015 250);
+      --accent-fg: oklch(38% 0.16 260);
+
+      --font-display: 'Source Serif 4', Georgia, serif;
+      --font-ui: 'Barlow', system-ui, sans-serif;
+
+      --space-1: 4px;
+      --space-2: 8px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --space-5: 20px;
+      --space-6: 24px;
+      --space-8: 32px;
+      --space-10: 40px;
+      --space-12: 48px;
+      --space-16: 64px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-display);
+      background: var(--paper);
+      color: var(--ink-900);
+      font-size: 16px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .shell {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: var(--space-12) clamp(var(--space-6), 5vw, 80px) var(--space-16);
+    }
+
+    /* ── Masthead ────────────────────────────────────── */
+    .masthead {
+      margin-bottom: var(--space-10);
+      padding-bottom: var(--space-8);
+      border-bottom: 1px solid var(--rule);
+    }
+    .masthead-eyebrow {
+      font-family: var(--font-ui);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-500);
+      margin-bottom: var(--space-4);
+    }
+    .masthead h1 {
+      font-size: clamp(26px, 3.5vw, 40px);
+      font-weight: 400;
+      line-height: 1.15;
+      color: var(--ink-900);
+      letter-spacing: -0.01em;
+      font-style: italic;
+      margin-bottom: var(--space-5);
+    }
+    .masthead h1 em {
+      font-style: normal;
+      font-weight: 600;
+    }
+    .masthead-meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: var(--space-5) var(--space-8);
+      margin-top: var(--space-6);
+    }
+    .masthead-meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .meta-label {
+      font-family: var(--font-ui);
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-300);
+    }
+    .meta-value {
+      font-family: var(--font-ui);
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--ink-700);
+      line-height: 1.4;
+    }
+
+    /* ── Section anatomy ──────────────────────────────── */
+    .report-section {
+      margin-bottom: var(--space-12);
+    }
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: var(--space-4);
+      margin-bottom: var(--space-6);
+      padding-bottom: var(--space-3);
+      border-bottom: 1px solid var(--rule);
+    }
+    .section-number {
+      font-family: var(--font-ui);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      color: var(--ink-300);
+      white-space: nowrap;
+    }
+    .section-title {
+      font-family: var(--font-ui);
+      font-size: 12.5px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-700);
+    }
+
+    /* ── Recommended pick callout ─────────────────────── */
+    .recommended-strip {
+      display: grid;
+      grid-template-columns: minmax(220px, 340px) 1fr;
+      gap: var(--space-8);
+      background: var(--green-bg);
+      border: 1px solid oklch(88% 0.04 150);
+      border-radius: 8px;
+      padding: var(--space-6);
+      margin-bottom: var(--space-12);
+      align-items: center;
+    }
+    .recommended-strip img {
+      width: 100%;
+      display: block;
+      border-radius: 5px;
+      border: 1px solid var(--rule);
+      background: var(--ink-50);
+    }
+    .recommended-label {
+      font-family: var(--font-ui);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--green-fg);
+      margin-bottom: var(--space-2);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .recommended-strip h2 {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 600;
+      font-size: 22px;
+      color: var(--ink-900);
+      margin-bottom: var(--space-3);
+    }
+    .recommended-strip .app-name {
+      font-family: var(--font-ui);
+      font-size: 12.5px;
+      color: var(--ink-500);
+      margin-bottom: var(--space-3);
+    }
+    .recommended-strip p {
+      font-size: 14px;
+      color: oklch(34% 0.04 150);
+      line-height: 1.65;
+      max-width: 60ch;
+    }
+
+    /* ── Reference grid ───────────────────────────────── */
+    .ref-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: var(--space-6);
+    }
+    .ref-card {
+      border: 1px solid var(--rule);
+      border-radius: 6px;
+      overflow: hidden;
+      background: var(--paper);
+      display: flex;
+      flex-direction: column;
+    }
+    .ref-card.is-recommended {
+      border-color: oklch(80% 0.06 150);
+      box-shadow: 0 0 0 1px oklch(80% 0.06 150);
+    }
+    .ref-card-img-wrap {
+      position: relative;
+      background: var(--ink-50);
+      border-bottom: 1px solid var(--rule);
+    }
+    .ref-card-img-wrap img {
+      width: 100%;
+      display: block;
+    }
+
+    /* ── Flow filmstrip (flow mode only) ──────────────── */
+    .ref-card-filmstrip {
+      display: flex;
+      gap: 1px;
+      overflow-x: auto;
+      background: var(--rule);
+      border-bottom: 1px solid var(--rule);
+    }
+    .filmstrip-step {
+      flex: 0 0 auto;
+      width: 140px;
+      background: var(--paper);
+      display: flex;
+      flex-direction: column;
+    }
+    .filmstrip-step img {
+      width: 100%;
+      display: block;
+      background: var(--ink-50);
+    }
+    .filmstrip-step-label {
+      font-family: var(--font-ui);
+      font-size: 10px;
+      color: var(--ink-500);
+      padding: 4px 6px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .ref-rank-badge {
+      position: absolute;
+      top: var(--space-3);
+      left: var(--space-3);
+      font-family: var(--font-ui);
+      font-size: 11px;
+      font-weight: 700;
+      color: #fff;
+      background: oklch(30% 0.01 255 / 0.72);
+      backdrop-filter: blur(4px);
+      border-radius: 4px;
+      padding: 3px 8px;
+      letter-spacing: 0.02em;
+    }
+    .ref-star-badge {
+      position: absolute;
+      top: var(--space-3);
+      right: var(--space-3);
+      font-family: var(--font-ui);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--green-fg);
+      background: oklch(97% 0.03 150 / 0.95);
+      border: 1px solid oklch(80% 0.06 150);
+      border-radius: 4px;
+      padding: 3px 7px;
+    }
+    .ref-card-body {
+      padding: var(--space-4) var(--space-5) var(--space-5);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+      flex: 1;
+    }
+    .ref-card-title {
+      font-family: var(--font-ui);
+      font-size: 14.5px;
+      font-weight: 600;
+      color: var(--ink-900);
+      line-height: 1.3;
+    }
+    .ref-card-app {
+      font-family: var(--font-ui);
+      font-size: 12px;
+      color: var(--ink-400, var(--ink-500));
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .platform-tag {
+      display: inline-block;
+      font-family: var(--font-ui);
+      font-size: 9.5px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--accent-fg);
+      background: var(--accent-bg);
+      border-radius: 3px;
+      padding: 1px 6px;
+    }
+    .ref-card-reason {
+      font-size: 13.5px;
+      color: var(--ink-700);
+      line-height: 1.6;
+      margin-top: var(--space-1);
+    }
+    .ref-card-link {
+      margin-top: auto;
+      padding-top: var(--space-3);
+      font-family: var(--font-ui);
+      font-size: 12px;
+      font-weight: 500;
+    }
+    .ref-card-link a {
+      color: var(--accent-fg);
+      text-decoration: none;
+      border-bottom: 1px solid oklch(85% 0.03 260);
+    }
+    .ref-card-link a:hover { border-bottom-color: var(--accent-fg); }
+
+    /* ── Footer meta ───────────────────────────────────── */
+    .footer-note {
+      font-family: var(--font-ui);
+      font-size: 12px;
+      color: var(--ink-300);
+      border-top: 1px solid var(--rule);
+      padding-top: var(--space-5);
+      margin-top: var(--space-4);
+      line-height: 1.6;
+    }
+
+    /* ── Print ───────────────────────────────────────── */
+    @media print {
+      .shell { padding: 24px 32px; }
+      .ref-card { break-inside: avoid; }
+    }
+
+    /* ── Responsive ──────────────────────────────────── */
+    @media (max-width: 720px) {
+      .recommended-strip { grid-template-columns: 1fr; }
+      .ref-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 480px) {
+      .ref-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- Masthead -->
+  <div class="masthead">
+    <div class="masthead-eyebrow">Mobbin UI Reference Set</div>
+    <h1><em>[Screen or Flow Name]</em> — Reference Gallery</h1>
+    <div class="masthead-meta-grid">
+      <div class="masthead-meta-item">
+        <span class="meta-label">Target Screen</span>
+        <span class="meta-value">[e.g. Login Screen]</span>
+      </div>
+      <div class="masthead-meta-item">
+        <span class="meta-label">Platform</span>
+        <span class="meta-value">[iOS / Web]</span>
+      </div>
+      <div class="masthead-meta-item">
+        <span class="meta-label">References Found</span>
+        <span class="meta-value">5</span>
+      </div>
+      <div class="masthead-meta-item">
+        <span class="meta-label">Date</span>
+        <span class="meta-value">[Date]</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recommended pick -->
+  <div class="recommended-strip">
+    <img src="[path/to/recommended-image]" alt="Recommended reference" />
+    <div>
+      <div class="recommended-label">&#9733; Top Recommendation</div>
+      <h2>[App Name] — [Screen Name]</h2>
+      <div class="app-name">[App Name] · [Platform]</div>
+      <p>[1-2 sentence explanation of why this is the strongest reference overall — the standout pattern, and how it best fits the target screen/flow.]</p>
+    </div>
+  </div>
+
+  <!-- All references -->
+  <section class="report-section">
+    <div class="section-header">
+      <span class="section-number">01</span>
+      <span class="section-title">All References</span>
+    </div>
+    <div class="ref-grid">
+
+      <!-- Repeat one .ref-card per reference, in ranked order. Add is-recommended + ref-star-badge only to the top pick. -->
+      <div class="ref-card is-recommended">
+        <div class="ref-card-img-wrap">
+          <span class="ref-rank-badge">01</span>
+          <span class="ref-star-badge">Recommended</span>
+          <img src="[path/to/image-1]" alt="[App Name] [Screen Name]" />
+        </div>
+        <div class="ref-card-body">
+          <div class="ref-card-title">[Screen Name]</div>
+          <div class="ref-card-app">[App Name] <span class="platform-tag">[iOS/Web]</span></div>
+          <p class="ref-card-reason">[Why this reference was picked — the specific pattern, layout, or interaction relevant to the target screen.]</p>
+          <div class="ref-card-link"><a href="[mobbin_url]" target="_blank" rel="noopener">View on Mobbin &rarr;</a></div>
+        </div>
+      </div>
+
+      <div class="ref-card">
+        <div class="ref-card-img-wrap">
+          <span class="ref-rank-badge">02</span>
+          <img src="[path/to/image-2]" alt="[App Name] [Screen Name]" />
+        </div>
+        <div class="ref-card-body">
+          <div class="ref-card-title">[Screen Name]</div>
+          <div class="ref-card-app">[App Name] <span class="platform-tag">[iOS/Web]</span></div>
+          <p class="ref-card-reason">[Reason]</p>
+          <div class="ref-card-link"><a href="[mobbin_url]" target="_blank" rel="noopener">View on Mobbin &rarr;</a></div>
+        </div>
+      </div>
+
+      <!-- ... remaining cards follow the same structure ... -->
+
+      <!--
+        FLOW MODE ONLY: replace .ref-card-img-wrap with a filmstrip like this,
+        one .filmstrip-step per saved screen in Mobbin's step order.
+      <div class="ref-card">
+        <div class="ref-card-img-wrap">
+          <span class="ref-rank-badge">02</span>
+          <div class="ref-card-filmstrip">
+            <div class="filmstrip-step">
+              <img src="[path/to/flow-2/01-step.webp]" alt="Step 1" />
+              <span class="filmstrip-step-label">1. [Step name]</span>
+            </div>
+            <div class="filmstrip-step">
+              <img src="[path/to/flow-2/02-step.webp]" alt="Step 2" />
+              <span class="filmstrip-step-label">2. [Step name]</span>
+            </div>
+          </div>
+        </div>
+        <div class="ref-card-body">
+          <div class="ref-card-title">[Flow Name]</div>
+          <div class="ref-card-app">[App Name] <span class="platform-tag">[iOS/Web]</span></div>
+          <p class="ref-card-reason">[Reason]</p>
+          <div class="ref-card-link"><a href="[mobbin_url]" target="_blank" rel="noopener">View on Mobbin &rarr;</a></div>
+        </div>
+      </div>
+      -->
+
+
+    </div>
+  </section>
+
+  <div class="footer-note">
+    Images sourced from Mobbin, saved uncompressed for reference. This report is a working artifact — not for redistribution outside the team.
+  </div>
+
+</div>
+</body>
+</html>

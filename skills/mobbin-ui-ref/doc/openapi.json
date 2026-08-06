@@ -1,0 +1,289 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Mobbin API",
+    "version": "1.0.0",
+    "description": "Search mobile and web UI designs from the world's best apps."
+  },
+  "servers": [
+    {
+      "url": "https://api.mobbin.com",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "Your Mobbin API key"
+      }
+    },
+    "schemas": {
+      "Screen": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique identifier for the screen"
+          },
+          "image_url": {
+            "type": "string",
+            "format": "uri",
+            "description": "Deprecated. Use `image.url` instead.",
+            "deprecated": true
+          },
+          "image": {
+            "$ref": "#/components/schemas/ScreenImage"
+          },
+          "mobbin_url": {
+            "type": "string",
+            "format": "uri",
+            "description": "Link to view this screen on Mobbin"
+          },
+          "app_name": {
+            "type": "string",
+            "description": "Name of the app this screen belongs to"
+          },
+          "platform": {
+            "type": "string",
+            "enum": [
+              "ios",
+              "web"
+            ],
+            "description": "Platform of the app"
+          }
+        },
+        "required": [
+          "id",
+          "image_url",
+          "image",
+          "mobbin_url",
+          "app_name",
+          "platform"
+        ]
+      },
+      "ScreenImage": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "Image URL for the screen."
+          },
+          "width": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Exact width of the delivered image in pixels. Present together with `height`; both may be absent when source dimensions are unknown."
+          },
+          "height": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Exact height of the delivered image in pixels. Present together with `width`; both may be absent when source dimensions are unknown."
+          },
+          "url_expires_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "RFC 3339 timestamp when the image URL expires."
+          }
+        },
+        "required": [
+          "url",
+          "url_expires_at"
+        ]
+      },
+      "ApiError": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "code",
+              "message"
+            ]
+          }
+        },
+        "required": [
+          "error"
+        ]
+      }
+    },
+    "parameters": {}
+  },
+  "paths": {
+    "/v1/screens/search": {
+      "post": {
+        "operationId": "screens_search",
+        "tags": [
+          "Screens"
+        ],
+        "summary": "Search screens with natural language",
+        "description": "Search Mobbin for screens using natural language. Returns relevant screens with image URLs, app names, and links to Mobbin.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "query": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 500,
+                    "example": "login screen with biometric authentication",
+                    "description": "Describe one screen in plain language — the UI elements you'd see and how they relate. Be specific; detail helps. Good: \"login screen with biometric authentication\", \"checkout page with promo code field and Apple Pay button\". Avoid: combining multiple screens/intents (search separately), negations (\"without ads\"), vague style words (\"modern\", \"clean\"), disconnected keyword lists. Name a specific app to filter results to it (e.g. \"Spotify now-playing screen\"). Do not include platform (ios/web) — use the dedicated parameter."
+                  },
+                  "platform": {
+                    "type": "string",
+                    "enum": [
+                      "ios",
+                      "web"
+                    ],
+                    "description": "Platform to search"
+                  },
+                  "mode": {
+                    "type": "string",
+                    "enum": [
+                      "deep",
+                      "standard",
+                      "fast"
+                    ],
+                    "default": "deep",
+                    "description": "Search mode. \"standard\" returns results with low latency. \"deep\" uses an AI-powered pipeline that interprets intent and scores each candidate for relevance, keeping the strong matches — ideal for nuanced queries. \"fast\" is a deprecated alias for \"standard\" and will be removed in a future version — use \"standard\" instead."
+                  },
+                  "limit": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 100,
+                    "default": 20,
+                    "description": "Maximum number of screens to return"
+                  },
+                  "image_quality": {
+                    "type": "string",
+                    "enum": [
+                      "optimized",
+                      "high"
+                    ],
+                    "default": "optimized",
+                    "description": "\"optimized\" returns images sized for AI agents and most programmatic inspection. \"high\" returns larger images for detailed visual inspection."
+                  },
+                  "exclude_screen_ids": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "maxItems": 100,
+                    "default": [],
+                    "description": "Screen IDs to exclude from results"
+                  }
+                },
+                "required": [
+                  "query",
+                  "platform"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Search results",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "screens": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Screen"
+                      }
+                    }
+                  },
+                  "required": [
+                    "screens"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Team or Enterprise plan required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
