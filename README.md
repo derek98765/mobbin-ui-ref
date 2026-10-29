@@ -8,15 +8,18 @@ gallery page with a picked recommendation.
 ## What's in this repo
 
 ```
-skills/
-  mobbin-ui-ref/SKILL.md                      # the skill
-  mobbin-ui-ref/references/report-template.html  # fixed gallery page template — read, not improvised, at runtime
-  mobbin-ui-ref/doc/mobbin-docs.md            # Mobbin MCP reference notes
-  mobbin-ui-ref/doc/openapi.json              # Mobbin API schema
+SKILL.md                      # the skill
+references/report-template.html  # fixed gallery page template, read (not improvised) at runtime
+doc/mobbin-docs.md            # Mobbin MCP reference notes
+doc/openapi.json              # Mobbin API schema
 ```
 
-Install by copying `skills/mobbin-ui-ref` into `~/.claude/skills/` (or a
-project's `.claude/skills/`).
+Install by cloning this repo into `~/.claude/skills/` (or a project's
+`.claude/skills/`) so the repo is the skill folder:
+
+```bash
+git clone https://github.com/derek98765/mobbin-ui-ref.git ~/.claude/skills/mobbin-ui-ref
+```
 
 ## Prerequisites
 
@@ -124,7 +127,7 @@ would show a filmstrip of that flow's steps instead of one image.
 ## Notes
 
 - Not for critiquing an already-decided design (use `critique`) or for
-  implementing one (use `frontend-design` / `implement-design`) — this
+  implementing one (use `frontend-design` / `implement-solution` (design mode)) — this
   skill is for the reference-gathering step before either of those.
 - `ref/` is a scratch location; the skill does not modify project source
   files and does not commit its output.

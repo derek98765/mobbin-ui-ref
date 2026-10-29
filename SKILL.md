@@ -21,13 +21,15 @@ Pick the right Mobbin tool:
 
 Write a specific, single-intent query describing the UI elements/steps you'd expect to see — not vague style words. Name a specific app only if the user asked to reference one directly.
 
+Favor well-known, established brands over small/obscure ones — the tool has no recency or popularity filter, so this has to be steered through the query itself. Naming a handful of recognizable products relevant to the domain (e.g. Linear, Notion, Stripe, Vercel, Coinbase, Slack) as examples within the query biases results toward that tier without restricting to only those apps.
+
 This determines the **mode** for the rest of the skill:
 - **Screen mode** (`search_screens` or `search_sections`): each of the N results is one standalone image.
 - **Flow mode** (`search_flows`): each of the N results is itself an ordered *sequence* of consecutive screens (a full journey, e.g. all the steps of one app's onboarding). N is the number of flow references selected, not a raw screen count — each flow reference contributes its own multi-screen sequence.
 
 ## Step 2 — Select the N best matches
 
-Request more results than N (e.g. `limit: N*2`, capped at the tool's max) so there's room to choose. Look at the actual returned images — not just metadata — and pick the N that most closely match the target screen/flow's purpose and key elements. Discard near-duplicates from the same app.
+Request more results than N (e.g. `limit: N*2`, capped at the tool's max) so there's room to choose. Look at the actual returned images — not just metadata — and pick the N that most closely match the target screen/flow's purpose and key elements. Discard near-duplicates from the same app, and deprioritize apps/brands you don't recognize as well-known in favor of established ones when both fit the pattern equally well.
 
 For each of the N, note:
 - App name and platform
