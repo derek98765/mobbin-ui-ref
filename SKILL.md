@@ -1,7 +1,7 @@
 ---
 name: mobbin-ui-ref
-description: Find best-matching Mobbin UI references for a screen or user flow the user is working on, save full-quality reference images into the project's ref folder, and generate an HTML gallery explaining why each was picked and which is recommended. Use when the user wants UI/UX inspiration, reference screens, or "how do other apps do X" for a specific screen or flow they're building.
-version: 1.0.0
+description: Find best-matching Mobbin UI references for a screen or user flow the user is working on, save full-quality reference images into the project's ref folder, and generate an HTML gallery explaining why each was picked and which is recommended. When asked for high-resolution images (the Mobbin MCP only returns ~768px previews), fetches the originals from mobbin.com in the user's signed-in Chrome. Use when the user wants UI/UX inspiration, reference screens, or "how do other apps do X" for a specific screen or flow they're building.
+version: 1.1.0
 user-invocable: true
 argument-hint: "[screen or flow description, e.g. \"login screen\" or \"onboarding flow\"]"
 ---
@@ -73,6 +73,21 @@ ref/mobbin-refs/<screen-or-flow-slug>-<YYYY-MM-DD>/
 - Download every image at the URL Mobbin returned as-is — **do not** run it through any compression, resizing, or optimization step (no `cwebp`, no `sharp`, no `/image-optimization` skill). Use `curl -sL -o <path> "<url>"` or equivalent. This preserves full source quality.
 - If `image_format: webp` download fails or the client can't handle it, retry the same search with `image_format: jpg`.
 
+### High resolution via the browser (only when asked)
+
+The MCP's `image_url` is a low-resolution preview (about 768px wide). When the user asks for high-resolution images, or hands you mobbin.com screen URLs to fetch, get them from mobbin.com in the user's own Chrome instead. Otherwise skip this section.
+
+- **Browser:** Claude in Chrome only, following the `anthropic-skills:chrome-browser` skill — it uses the user's signed-in Mobbin session. Never WebFetch (mobbin.com returns 403), Playwright or a headless browser.
+- **Signed out or paywalled:** stop and ask the user to sign in themselves. Never type credentials.
+- **For each reference:**
+  1. Open its `mobbin_url` (or the URL the user gave) in a new tab.
+  2. Check the page shows the same screen as the MCP preview. The MCP index lags the live site, so the same ID can show a different screen. If it differs, say so and keep the MCP image for that card.
+  3. Get the original image: use the page's own download action if Mobbin offers one. Otherwise read the screen image's `currentSrc` and its largest `srcset` candidate with `javascript_tool`, and download that URL with `curl -sL` to the same file path Step 3 would use.
+  4. If the download fails (for example it needs the session), capture the image element with the `browser-screenshot` skill's `zoom` method, which saves a 1:1 PNG.
+- **Verify every file:** `file -b <path>` must be an image, not an error body, and `sips -g pixelWidth <path>` must be wider than the MCP preview. If not, keep the MCP image and say which cards stayed low-resolution.
+- **Flow mode:** do this per step, in Mobbin's step order.
+- Same rule as above: never compress or resize what you download.
+
 ## Step 4 — Generate the HTML gallery
 
 Use `references/report-template.html` in this skill's directory as the **exact** template — same CSS custom properties, class names, and HTML structure every time. Do not redesign it per-run; only fill in content.
@@ -102,6 +117,6 @@ Do not print all N reasons again in chat — the HTML is the deliverable.
 
 ## Notes
 
-- This skill only reads from Mobbin and writes to `ref/` — it does not modify any project source files, so no design-token or component-reuse rules apply here.
+- This skill only reads from Mobbin (MCP, or mobbin.com in the user's Chrome when high resolution is asked for) and writes to `ref/` — it does not modify any project source files, so no design-token or component-reuse rules apply here.
 - `ref/` is a scratch location; do not commit its contents (respect the project's `.gitignore` — do not add a new ignore rule yourself without asking, per this project's existing rule on not touching `.gitignore`).
 - If Mobbin returns fewer than N good matches for a narrow query, broaden the query once rather than padding with irrelevant results; if still short, tell the user how many were found and why.
